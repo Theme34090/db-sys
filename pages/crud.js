@@ -17,6 +17,11 @@ import CreateEvent from "../components/Event/Create";
 import UpdateEvent from "../components/Event/Update";
 import DeleteEvent from "../components/Event/Delete";
 
+import SearchBand from "../components/Band/Search";
+// import CreateBand from "../components/Band/Create";
+// import UpdateBand from "../components/Band/Update";
+// import DeleteBand from "../components/Band/Delete";
+
 const Main = ({ model, action }) => {
   if (model === "event") {
     switch (action) {
@@ -33,6 +38,19 @@ const Main = ({ model, action }) => {
         break;
     }
   } else {
+    switch (action) {
+      case "search":
+        return <SearchBand />;
+      case "create":
+        return <CreateBand />;
+      case "update":
+        return <UpdateBand />;
+      case "delete":
+        return <DeleteBand />;
+
+      default:
+        break;
+    }
   }
 };
 
