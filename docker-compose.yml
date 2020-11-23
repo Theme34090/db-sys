@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/mysqlconfig:/etc/mysql/conf.d
+      - ./db/mysql:/var/lib/mysql
+      - ../band-finder:/usr/band-finder
