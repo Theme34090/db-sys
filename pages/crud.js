@@ -18,7 +18,7 @@ import UpdateEvent from "../components/Event/Update";
 import DeleteEvent from "../components/Event/Delete";
 
 import SearchBand from "../components/Band/Search";
-// import CreateBand from "../components/Band/Create";
+import CreateBand from "../components/Band/Create";
 // import UpdateBand from "../components/Band/Update";
 // import DeleteBand from "../components/Band/Delete";
 

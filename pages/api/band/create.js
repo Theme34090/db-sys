@@ -6,18 +6,30 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "PUT":
-      const { bandManagerId, performerId, name, description, startDate } = body;
+      const { bandId, bandManagerId, name, description } = body;
       const performerResult = await db.query(SQL`
-        INSERT INTO performer (performerId) 
-        VALUES (${performerId})
+        INSERT INTO performer () 
+        VALUES ()
       `);
+      const performer = await db.query(
+        SQL`CALL getLatestPerformerAutoIncrementId()`
+      );
       const bandResult = await db.query(SQL`
-        INSERT INTO band (userId,performerId,name,status,description,startDate) 
-        VALUES (${bandManagerId},${performerId},${name},'active',${description},${startDate})
+        INSERT INTO band (bandId,userId,performerId,name,status,description,startDate) 
+        VALUES (${bandId},${bandManagerId},${
+        performer[0][0]["AUTO_INCREMENT"]
+      },${name},'active',${description},${new Date()})
       `);
-      console.log(performerResult);
-      console.log(bandResult);
-      res.status(200).json({ performerResult, bandResult });
+      // console.log(performerResult);
+      // console.log(bandResult);
+      if (performerResult.error || bandResult.error) {
+        res.status(400).end("error");
+        break;
+      }
+      const band = await db.query(SQL`
+        SELECT * FROM band WHERE bandId=${bandId};
+      `);
+      res.status(200).json(band);
       break;
 
     default:

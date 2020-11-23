@@ -11,13 +11,13 @@ const DisplayResult = ({ data }) => {
           if (each)
             return (
               <>
-                {Object.entries(each).map((entry) => {
+                {Object.entries(each).map((entry, idx) => {
                   return (
                     // <Box display="flex">
                     //   <Text fontWeight="bold">{entry[0]} :</Text>
                     //   <Text>{` ${entry[1]}`}</Text>
                     // </Box>
-                    <Text>
+                    <Text key={idx}>
                       <strong>{entry[0]} : </strong>
                       {entry[1]}
                     </Text>
