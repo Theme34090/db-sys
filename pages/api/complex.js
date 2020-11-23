@@ -1,4 +1,4 @@
-import db from "../../db";
+import db from "../../db/mysql";
 import SQL from "sql-template-strings";
 
 export default async function handler(req, res) {
