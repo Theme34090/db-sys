@@ -10,6 +10,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
+import Layout from "../components/Layout";
 import SelectAction from "../components/SelectAction";
 import SearchEvent from "../components/Event/Search";
 import CreateEvent from "../components/Event/Create";
@@ -41,7 +42,7 @@ const Index = () => {
 
   return (
     <>
-      <Container p={4}>
+      <Layout>
         <Stack spacing="6">
           <Box p={4} border="1px solid" borderColor="gray.600" rounded="lg">
             <Heading mb="2">Select model</Heading>
@@ -56,7 +57,7 @@ const Index = () => {
 
           <Main model={model} action={action} />
         </Stack>
-      </Container>
+      </Layout>
     </>
   );
 };
