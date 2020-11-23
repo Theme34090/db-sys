@@ -16,10 +16,36 @@ export default async function handler(req, res) {
       res.status(200).json(band);
       break;
 
+    case "PUT":
+      const { bandId, name, status, description, endDate } = body;
+      const bandResult = await db.query(SQL`
+          UPDATE band SET
+            name=${name},
+            status=${status},
+            description=${description},
+            endDate=${endDate}
+          WHERE bandID=${bandId}
+        `);
+      // console.log(performerResult);
+      // console.log(bandResult);
+      if (bandResult.error) {
+        res.status(400).end("error");
+        break;
+      }
+      const bandr = await db.query(SQL`
+          SELECT * FROM band WHERE bandId=${bandId};
+        `);
+      res.status(200).json(bandr);
+      break;
+
     case "DELETE":
       const deleteResult = await db.query(SQL`
           DELETE FROM band WHERE bandId=${id};
         `);
+      if (deleteResult.affectedRows === 0) {
+        res.status(404).end();
+        break;
+      }
       res.status(200).json(deleteResult);
       break;
 

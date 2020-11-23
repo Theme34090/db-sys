@@ -12,11 +12,8 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 
-import DisplayResult from "../DisplayResult";
-
 const CreateEvent = () => {
   const { handleSubmit, register, setValue } = useForm();
-  const [updateResult, setUpdateResult] = useState(null);
   const [eventId, setEventId] = useState(null);
 
   const onSubmit = (values) => {
@@ -75,7 +72,7 @@ const CreateEvent = () => {
           </Box>
           <Button onClick={handleSearchClick}>Search</Button>
 
-          <Heading size="md">Create event</Heading>
+          <Heading size="md">Update event</Heading>
           <Box>
             <FormLabel htmlFor="userId">Organizer id</FormLabel>
             <Input name="userId" placeholder="1" ref={register} />
@@ -119,17 +116,6 @@ const CreateEvent = () => {
           <Button type="submit">Update</Button>
         </Stack>
       </form>
-      {updateResult && (
-        <Box
-          spacing="4"
-          p={4}
-          border="1px solid"
-          borderColor="gray.600"
-          rounded="lg"
-        >
-          <DisplayResult data={updateResult} />
-        </Box>
-      )}
     </>
   );
 };
