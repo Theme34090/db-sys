@@ -1,0 +1,12 @@
+cd createTable &&
+/bin/bash createTableAll.sh  && 
+cd .. &&
+mysql -u root -proot band_finder < addForeignKey/alterForeignKey.sql && 
+cd data &&
+/bin/bash importCSV.sh 
+
+drop database band_finder;
+create database band_finder;
+exit
+
+SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION
