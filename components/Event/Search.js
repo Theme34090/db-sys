@@ -1,18 +1,36 @@
 import { useState } from "react";
 import axios from "axios";
-import { Heading, Text, Input, Button, Stack, Box } from "@chakra-ui/react";
+import {
+  Heading,
+  Text,
+  Input,
+  Button,
+  Stack,
+  Box,
+  useToast,
+} from "@chakra-ui/react";
 
 import DisplayResult from "../DisplayResult";
 
 const SearchEvent = () => {
+  const toast = useToast();
   const [id, setId] = useState(null);
   const [searchResult, setSearchResult] = useState(null);
 
-  const handleSearchClick = () => {
-    axios.get(`http://localhost:3000/api/event/${id}`).then((res) => {
+  const handleSearchClick = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3000/api/event/${id}`);
       console.log(res.data);
       setSearchResult(res.data);
-    });
+    } catch (err) {
+      console.log(err);
+      return toast({
+        title: "Event not found.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
   const handleIdChange = (e) => {
     setId(e.target.value);

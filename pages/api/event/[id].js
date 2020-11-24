@@ -13,6 +13,10 @@ export default async function handler(req, res) {
       const eventRes = await db.query(SQL`
         SELECT * FROM event WHERE eventId=${id};
       `);
+      if (eventRes.length === 0) {
+        res.status(400).end("error");
+        break;
+      }
       const locationRes = await db.query(SQL`
         SELECT * FROM location WHERE location=${eventRes[0].location};
       `);
@@ -31,6 +35,7 @@ export default async function handler(req, res) {
         latitude,
         longitude,
       } = body;
+      await db.query("START TRANSACTION");
       const locationResult = await db.query(SQL`
           UPDATE location SET
             location=${location},
@@ -52,6 +57,7 @@ export default async function handler(req, res) {
       console.log(eventResult);
       if (locationResult.error || eventResult.error) {
         res.status(400).end("error");
+        await db.query("ROLLBACK");
         break;
       }
       const event = await db.query(SQL`
@@ -61,6 +67,7 @@ export default async function handler(req, res) {
           SELECT * FROM location WHERE location=${event[0].location};
         `);
       res.status(200).json([Object.assign(event[0], loc[0])]);
+      await db.query("COMMIT");
       break;
 
     case "DELETE":

@@ -3,34 +3,52 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import {
   Heading,
-  Text,
   Input,
   Button,
   Stack,
   Box,
   FormLabel,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 
 const CreateEvent = () => {
+  const toast = useToast();
   const { handleSubmit, register, setValue } = useForm();
   const [eventId, setEventId] = useState(null);
 
-  const onSubmit = (values) => {
-    console.log(values);
-    axios
-      .put(`http://localhost:3000/api/event/${eventId}`, values)
-      .then((res) => {
-        console.log(res);
-        setValue("userId", res.data[0].userId);
-        setValue("name", res.data[0].name);
-        setValue("location", res.data[0].location);
-        setValue("latitude", res.data[0].latitude);
-        setValue("longitude", res.data[0].longitude);
-        setValue("ticketPrice", res.data[0].ticketPrice);
-        setValue("description", res.data[0].description);
-        setValue("dateTime", res.data[0].dateTime);
+  const onSubmit = async (values) => {
+    try {
+      console.log(values);
+      const res = await axios.put(
+        `http://localhost:3000/api/event/${eventId}`,
+        values
+      );
+
+      console.log(res);
+      setValue("userId", res.data[0].userId);
+      setValue("name", res.data[0].name);
+      setValue("location", res.data[0].location);
+      setValue("latitude", res.data[0].latitude);
+      setValue("longitude", res.data[0].longitude);
+      setValue("ticketPrice", res.data[0].ticketPrice);
+      setValue("description", res.data[0].description);
+      setValue("dateTime", res.data[0].dateTime);
+      return toast({
+        title: "Update event successful.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
       });
+    } catch (err) {
+      console.log(err);
+      return toast({
+        title: "Update event failed.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
   const handleEventIdChange = (e) => {
     setEventId(e.target.value);

@@ -3,31 +3,47 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import {
   Heading,
-  Text,
   Input,
   Button,
   Stack,
   Box,
   FormLabel,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 
 const CreateEvent = () => {
+  const toast = useToast();
   const { handleSubmit, register, setValue } = useForm();
   const [bandId, setBandId] = useState(null);
 
-  const onSubmit = (values) => {
-    console.log(values);
-    axios
-      .put(`http://localhost:3000/api/band/${bandId}`, values)
-      .then((res) => {
-        console.log(res);
-        setValue("bandId", res.data[0].bandId);
-        setValue("name", res.data[0].name);
-        setValue("status", res.data[0].status);
-        setValue("description", res.data[0].description);
-        setValue("endDate", res.data[0].endDate);
+  const onSubmit = async (values) => {
+    try {
+      console.log(values);
+      const res = await axios.put(
+        `http://localhost:3000/api/band/${bandId}`,
+        values
+      );
+      console.log(res);
+      setValue("bandId", res.data[0].bandId);
+      setValue("name", res.data[0].name);
+      setValue("status", res.data[0].status);
+      setValue("description", res.data[0].description);
+      setValue("endDate", res.data[0].endDate);
+      return toast({
+        title: "Band updated successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
       });
+    } catch (err) {
+      return toast({
+        title: "Update band failed.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
   const handleBandIdChange = (e) => {
     setBandId(e.target.value);

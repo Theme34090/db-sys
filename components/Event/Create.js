@@ -10,20 +10,39 @@ import {
   Box,
   FormLabel,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 
 import DisplayResult from "../DisplayResult";
 
 const CreateEvent = () => {
+  const toast = useToast();
   const { handleSubmit, register } = useForm();
   const [createResult, setCreateResult] = useState(null);
 
-  const onSubmit = (values) => {
-    console.log(values);
-    axios.put("http://localhost:3000/api/event/create", values).then((res) => {
+  const onSubmit = async (values) => {
+    try {
+      console.log(values);
+      const res = await axios.put(
+        "http://localhost:3000/api/event/create",
+        values
+      );
       console.log(res);
       setCreateResult(res.data);
-    });
+      return toast({
+        title: "Create event successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (err) {
+      return toast({
+        title: "Create event failed.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (

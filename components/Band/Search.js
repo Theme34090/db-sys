@@ -8,11 +8,19 @@ const SearchEvent = () => {
   const [id, setId] = useState(null);
   const [searchResult, setSearchResult] = useState(null);
 
-  const handleSearchClick = () => {
-    axios.get(`http://localhost:3000/api/band/${id}`).then((res) => {
+  const handleSearchClick = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3000/api/band/${id}`);
       console.log(res.data);
       setSearchResult(res.data);
-    });
+    } catch (err) {
+      return toast({
+        title: "Band not found.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
   const handleIdChange = (e) => {
     setId(e.target.value);
